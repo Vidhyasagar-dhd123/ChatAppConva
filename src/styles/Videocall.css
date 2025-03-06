@@ -1,0 +1,57 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.videoContainer{
+    width: 100%;
+    background-color: rgba(38, 58, 64, 0.455);
+    top: 100%;
+    left: 50%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items:center;
+}
+.left-video video
+{   height: 100%;
+    width: 50vw;
+    left:0;
+    
+}
+.right-video video
+{
+    width: 50vw;
+    height: 100%;
+}
+
+
+.conrolvideo{
+    background-color: rgba(195, 193, 193, 0.545);
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    gap: 5rem;
+    padding: 1rem;
+}
+
+.endvideobtn{
+    padding: .2rem 1rem;
+    background-color: rgb(128, 7, 7);
+    bottom: 0;
+    position: absolute;
+    color: white;
+    border-radius: 5px;
+    z-index: 103;
+ 
+}
+
+@media (min-device-aspect-ratio<1) {
+    .endvideobtn{
+
+        right: 0;
+   
+    }
+
+}

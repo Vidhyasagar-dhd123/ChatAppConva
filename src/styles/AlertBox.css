@@ -1,0 +1,51 @@
+/* Container to center the alert box horizontally and vertically */
+
+.alert-box-container {
+  position: fixed;
+  z-index:1000;
+
+  left: 50%;
+  transform: translateX(-50%);
+
+
+  display: flex;
+  justify-content: center;
+
+}
+
+
+/* The alert box itself */
+.alert-box {
+  background-color:#09272899;
+  color: #fff;
+  padding: 10px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px #214446(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 400px;
+  width: 100%;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* The message in the alert box */
+.alert-message {
+  flex: 1;
+}
+
+/* Close button styling */
+.close-btn {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.close-btn:hover {
+ background-color: green;
+}

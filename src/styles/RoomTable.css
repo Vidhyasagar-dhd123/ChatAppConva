@@ -1,0 +1,53 @@
+/* Container */
+.room-table-container {
+  margin: 2rem auto;
+  max-width: 100vw;
+  padding: 15px;
+  background-color: #162447; /* Deep blue for a unified color scheme */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  overflow: auto;
+}
+
+/* Table Styling */
+.room-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.room-table th,
+.room-table td {
+  text-align: left;
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.room-table th {
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+}
+
+.room-table tr:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.room-table td {
+  font-size: 14px;
+  color: #e1e1e1;
+}
+.join-button {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: white;
+  background-color: #ff5733;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.join-button:hover {
+  background-color: #c70039;
+}

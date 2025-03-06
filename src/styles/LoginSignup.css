@@ -1,0 +1,85 @@
+/* Form Container */
+body{
+    background-color: #1d2830;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #1e1e2f;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    color: #fff;
+    border: 0.5px solid white;
+  }
+  
+  /* Header */
+  .form-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-header h1 {
+    font-size: 1.8rem;
+    color: #50b7f5;
+  }
+  
+  .form-header p {
+    font-size: 1rem;
+    color: #ccc;
+  }
+  
+  /* Form Fields */
+  .auth-form .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .auth-form label {
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+  
+  .auth-form input {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    margin-top: 0.3rem;
+    background: #28293e;
+    color: #fff;
+  }
+  
+  /* Button */
+  .form-btn {
+    width: 100%;
+    padding: 0.7rem;
+    border: none;
+    border-radius: 5px;
+    background: #50b7f5;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .form-btn:hover {
+    background: #398ac9;
+  }
+  
+  /* Toggle Link */
+  .toggle-link {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .toggle-link .link {
+    color: #50b7f5;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .toggle-link .link:hover {
+    color: #398ac9;
+  }
+  

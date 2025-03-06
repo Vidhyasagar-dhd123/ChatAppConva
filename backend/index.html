@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JWT Auth Example</title>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const panels = document.querySelectorAll(".panel");
+      const leftButton = document.getElementById("leftBtn");
+      const rightButton = document.getElementById("rightBtn");
+  
+      let currentPanelIndex = 0;
+  
+      // Show the first panel on load
+      panels[currentPanelIndex].classList.add("active");
+  
+      const showPanel = (index) => {
+        panels.forEach((panel, i) => {
+          if (i === index) {
+            panel.classList.add("active");
+          } else {
+            panel.classList.remove("active");
+          }
+        });
+      };
+  
+      leftButton.addEventListener("click", () => {
+        currentPanelIndex = (currentPanelIndex - 1 + panels.length) % panels.length;
+        showPanel(currentPanelIndex);
+      });
+  
+      rightButton.addEventListener("click", () => {
+        currentPanelIndex = (currentPanelIndex + 1) % panels.length;
+        showPanel(currentPanelIndex);
+      });
+    });
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+  
+    .container {
+      width: 100%;
+      max-width: 600px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  
+    .panel {
+      width: 100%;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+  
+    .panel.active {
+      display: block;
+    }
+  
+    form {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+  
+    label {
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+  
+    input,
+    textarea,
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+  
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+  
+    button:hover {
+      background-color: #218838;
+    }
+  
+    textarea {
+      resize: vertical;
+    }
+  
+    #result {
+      padding: 20px;
+      background-color: #e9ecef;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 16px;
+      text-align: center;
+    }
+  
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 400px;
+      margin-top: 20px;
+    }
+  
+    .navigation button {
+      width: 48%;
+      padding: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  
+    .navigation button:hover {
+      background-color: #0056b3;
+    }
+  
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+  <body>
+    <div class="container">
+      <!-- Registration Form -->
+      <div class="panel" id="registrationPanel">
+        <h1>Registration Form</h1>
+        <form id="registerForm">
+          <label for="username1">Username:</label>
+          <input type="text" id="username1" required />
+          <label for="password1">Password:</label>
+          <input type="password" id="password1" required />
+          <button type="submit">Register</button>
+        </form>
+      </div>
+  
+      <!-- Login Form -->
+      <div class="panel" id="loginPanel">
+        <h1>Login Form</h1>
+        <form id="loginForm" action="myRooms">
+          <label for="username">Username:</label>
+          <input type="text" id="username" required />
+          <label for="password">Password:</label>
+          <input type="password" id="password" required />
+          <button type="submit">Login</button>
+        </form>
+      </div>
+  <a href="/api/myRooms">my rooms</a>
+      <!-- Event Emitter Panel -->
+      <div class="panel" id="eventEmitterPanel">
+        <h1>Event Emitter</h1>
+        <label for="jsonField">Enter JSON:</label>
+        <textarea id="jsonField"></textarea>
+        <label for="event">Enter Event Name:</label>
+        <input type="text" id="event" />
+        <button id="Emitter">Emit Event</button>
+        <label for="listener">Listen Event:</label>
+        <input type="text" id="listener" />
+        <div id="result">This is div</div>
+      </div>
+  
+      <!-- Navigation Buttons -->
+      <div class="navigation">
+        <button id="leftBtn">Left</button>
+        <button id="rightBtn">Right</button>
+      </div>
+    </div>
+
+    <script>
+      const socket = io();
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+
+          try {
+            console.log(username,password)
+            const response = await fetch("/api/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              action:"/myRooms",
+              body: JSON.stringify({ username, password }),
+            });
+            console.log(response)
+            if (response.ok) {
+              const data = await response.json();
+              
+            } else {
+              const error = await response.json();
+              alert(error.error || "Login failed!");
+            }
+          } catch (err) {
+            console.error("Error:", err);
+            alert("Something went wrong. Please try again.");
+          }
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+    const listener = document.getElementById("listener");
+    const result = document.getElementById("result");
+    const eventJSON = document.getElementById("jsonField");
+    const event = document.getElementById("event");
+    const emitter = document.getElementById("Emitter");
+
+    // Emit data when the button is clicked
+    emitter.onclick = () => {
+        try {
+            const parsedJSON = JSON.parse(eventJSON.value); // Parse and validate JSON
+            socket.emit(event.value.trim(), parsedJSON); // Emit the event
+        } catch (e) {
+            console.error("Invalid JSON:", e.message); // Handle invalid JSON
+            alert("Invalid JSON. Please check your input.");
+        }
+    };
+
+    // Add a new listener dynamically
+    let currentEventName = ""; // Track the current event to avoid redundant listeners
+
+    const debounce = (func, delay) => {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => func(...args), delay);
+        };
+    };
+
+    const handleInputChange = () => {
+        const eventName = listener.value.trim();
+        if (eventName && eventName !== currentEventName) {
+            // Remove existing listener for the previous event
+            if (currentEventName) {
+                socket.off(currentEventName);
+            }
+
+            // Update the current event name
+            currentEventName = eventName;
+
+            // Add a new listener
+            socket.on(eventName, (data) => {
+                result.innerHTML = JSON.stringify(data, null, 2); // Format the data
+                console.log(data);
+            });
+        }
+    };
+
+    listener.addEventListener("input", debounce(handleInputChange, 300)); // Debounce for better performance
+});
+
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const username = document.getElementById("username1").value;
+          const password = document.getElementById("password1").value;
+
+          try {
+            const response = await fetch("/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ username, password }),
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+            } else {
+              const error = await response.json();
+              alert(error.error || "Login failed!");
+            }
+          } catch (err) {
+            console.error("Error:", err);
+            alert("Something went wrong. Please try again.");
+          }
+        });
+    </script>
+  </body>
+</html>
