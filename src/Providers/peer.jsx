@@ -39,9 +39,6 @@ export const PeerProvider = (props)=>{
             console.log("Track added:", track);
         });
     };
-    peer.ontrack=(ev)=>{
-        alert(ev)
-    }
     
     const setRemoteAns=async(ans)=>{
         await peer.setRemoteDescription(ans)

@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/RoomTable.css";
 
 function RoomTable({ socket, sendRooms, myfunction,action }) {
+  const [pass,setPass] = useState(null)
+  const handleInputChange=(event)=>{
+    setPass(event.target.value)
+  }
   const renderRoomBody = () => {
     return sendRooms?.map((room, id) => (
       <tr key={id}>
@@ -11,16 +15,18 @@ function RoomTable({ socket, sendRooms, myfunction,action }) {
         <td>{room.roomId}</td>
         <td>{room.roomPass}</td>
         <td>
-          {action==="Join Room"?
+          {action==="Join Room"?<>
+          <input style={{background:"transparent", outline:"none", border:"none", color:"white"}} placeholder="Password" onChange={handleInputChange}></input>
           <button
             className="join-button"
             onClick={()=>{
-              socket.emit("joinRoom",room)
-              socket.type = room.type
+              setPass("")
+              socket.emit("joinRoom",{data:room,pass})
             }}
+            
           >
             {action}
-          </button>: <button
+          </button></>: <button
             className="join-button"
             onClick={myfunction.bind(this,id)}
           >

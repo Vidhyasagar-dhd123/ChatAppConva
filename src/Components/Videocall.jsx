@@ -52,6 +52,9 @@ function Videocall() {
     localVideoRef.current.srcObject = userStream;
     setStream(userStream);
     sendStream(userStream);
+   
+    const offer = await createOffer()
+    socket.emit("offer", {offer,name:socket.name})
   };
   useEffect(() => {
     if (remoteStream && remoteVideoRef.current) {
@@ -59,16 +62,26 @@ function Videocall() {
     }
   }, [remoteStream]);
 
+  const handleTracks = (event) => {
+    console.log(event);
+    setRemoteStream(event.streams[0]);
+  };
+
+  const handleCandidate=(event)=>{
+    if(event.candidate!==null){
+    socket.emit("candidate",{candidate:event.candidate,name:socket.name })
+    console.log(event)}
+  }
+
+const setCandidate=async({candidate,name})=>{
+  if(name!==socket.name)
+  await peer.addIceCandidate(candidate);
+}
 
   useEffect(() => {
-    peer.ontrack=(event) => {
-        console.log(event);
-        setRemoteStream(event.streams[0]);
-      };
-  });
-
-
-  useEffect(() => {
+    peer.addEventListener("track",handleTracks)
+    peer.addEventListener("icecandidate",handleCandidate)
+    socket.on("candidate",setCandidate)
     socket.on("offer", handleOffer);
     socket.on("answer", handleAnswer);
 
@@ -76,9 +89,11 @@ function Videocall() {
 
     return () => {
       socket.off("offer", handleOffer);
+      socket.off("candidate", setCandidate);
       socket.off("answer", handleAnswer);
+      peer.removeEventListener("track",handleTracks)
     };
-  }, [video, audio, remoteStream]);
+  }, [video, audio]);
 
   return (
     <div className="videoContainer">

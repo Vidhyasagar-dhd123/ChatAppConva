@@ -152,8 +152,10 @@ io.on("connection", async (socket) => {
         }
       }
     );
-    socket.on("joinRoom", async (data) => {
+    socket.on("joinRoom", async ({data,pass}) => {
+      if(pass){
       let roomId 
+      console.log(data)
       if(data)
         roomId = data.roomId
       const room = await Genres.findOne({roomId:roomId})
@@ -163,15 +165,18 @@ io.on("connection", async (socket) => {
       }
       socket.roomId = roomId
       socket.join(roomId);
-      socket.emit("roomJoined", { roomId });
+      socket.emit("roomJoined", data);
       if (Inbox[roomId]) socket.emit("updateInbox", Inbox[roomId]);
       socket.broadcast.to(roomId).emit("alert", user.username + " Joined Room");
       console.log(`User ${socket.id} joined room: ${roomId}`);
-      emitVisitors(io.to(roomId).adapter.nsp,io.to(roomId))
-    }
+      emitVisitors(io.to(roomId).adapter.nsp,io.to(roomId))}
       else{
         socket.emit("alert","Room Does not exist")
       }
+      
+    }else{
+      socket.emit("alert","password required")
+    }
     });
 
 
@@ -189,17 +194,17 @@ io.on("connection", async (socket) => {
     });
 
     socket.on("offer", ({offer,name}) => {
-      socket.to(socket.roomId).emit("offer", {offer,name});
+      socket.broadcast.to(socket.roomId).emit("offer", {offer,name});
       console.log(offer,socket.roomId)
     });
   
     socket.on("answer", ({ans,name}) => {
-      socket.to(socket.roomId).emit("answer", {ans,name});
+      socket.broadcast.to(socket.roomId).emit("answer", {ans,name});
       console.log({ans,name})
     });
   
     socket.on("candidate", (data) => {
-      socket.to(socket.roomId).emit("candidate", data);
+      socket.broadcast.to(socket.roomId).emit("candidate", {candidate:data.candidate,name:data.name});
       console.log(data)
     });
 

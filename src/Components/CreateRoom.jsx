@@ -34,7 +34,7 @@ function CreateRoom({ socket }) {
       </div>
       <div className="form-group">
         <label htmlFor="genre">Room Genre:</label>
-        <select ref={genre} id="options">
+        <select style={{background:"#434490", outline:"none", border:"none", color:"white"}} ref={genre} id="options">
             <option value="">Enter any genre</option>
             <option value="Math">Mathematics</option>
             <option value="Social Sciences">Social Sciences</option>
@@ -63,8 +63,8 @@ function CreateRoom({ socket }) {
       </div>
       <div className="form-group">
         <label htmlFor="genre">Room Type:</label>
-        <select ref={type} id="options">
-            <option value="chat">Enter any genre</option>
+        <select style={{background:"#434490", outline:"none", border:"none", color:"white"}} ref={type} id="options">
+            <option  value="chat">Enter any genre</option>
             <option value="videocall">Video call</option>
             <option value="chat">chat</option>
         </select>

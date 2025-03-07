@@ -74,8 +74,7 @@ function ChatPage() {
 
   const roomJoined =useCallback( async(room) => {
     setRoom(room);
-    const offer = await createOffer()
-    socket.emit("offer", {offer,name:socket.name})
+    socket.type = room.type
   },[createOffer,socket])
   //render the table when visitors are updated
   const renderTableBody = () => {
